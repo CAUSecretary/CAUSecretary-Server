@@ -1,0 +1,113 @@
+package com.example.demo.src.auth;
+import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponse;
+import com.example.demo.config.BaseResponseStatus;
+import com.example.demo.src.auth.model.PostAuthloginRes;
+import com.example.demo.src.auth.model.PostLoginReq;
+import com.example.demo.src.auth.model.PostLoginRes;
+import com.example.demo.src.user.UserProvider;
+import com.example.demo.src.user.UserService;
+import com.example.demo.utils.JwtService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import static com.example.demo.config.BaseResponseStatus.POST_USERS_EMPTY_PASSWORD;
+import static com.example.demo.config.BaseResponseStatus.POST_USERS_INVALID_EMAIL;
+import static com.example.demo.utils.ValidationRegex.isRegexEmail;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+    final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private final AuthProvider authProvider;
+    @Autowired
+    private final AuthService authService;
+    @Autowired
+    private final JwtService jwtService;
+
+
+
+
+    public AuthController(AuthProvider authProvider, AuthService authService, JwtService jwtService){
+        this.authProvider = authProvider;
+        this.authService = authService;
+        this.jwtService = jwtService;
+    }
+
+
+
+    @ResponseBody
+    @PostMapping("/userlogin")
+    public BaseResponse<PostLoginRes> userlogIn(@RequestBody PostLoginReq postLoginReq) throws Exception{
+
+        System.out.println(postLoginReq.toString());
+        try{
+            if(postLoginReq.getEmail() == null){ // email이 비어서 왔는지 확인
+                return new BaseResponse<>(BaseResponseStatus.POST_USERS_EMPTY_EMAIL);
+            }
+            if(postLoginReq.getPassword() == null){ // password가 비어서 왔는지 확인
+                return new BaseResponse<>((POST_USERS_EMPTY_PASSWORD));
+            }
+            //올바른 email 형식인지 --> 후에, 중앙대학교 메일로만 받는것으로 수정 예정
+            if(!isRegexEmail(postLoginReq.getEmail())){
+                System.out.println("여기임");
+                return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+            }
+
+            PostLoginRes postLoginRes = authService.login(postLoginReq);
+
+            return new BaseResponse<>(postLoginRes);
+
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+
+        }
+
+    }
+
+
+
+    @ResponseBody
+    @PostMapping("/authlogin")
+    public BaseResponse<PostAuthloginRes> authlogIn(@RequestBody PostLoginReq postLoginReq) throws Exception{
+
+        System.out.println(postLoginReq.toString());
+        try{
+            if(postLoginReq.getEmail() == null){ // email이 비어서 왔는지 확인
+                return new BaseResponse<>(BaseResponseStatus.POST_USERS_EMPTY_EMAIL);
+            }
+            if(postLoginReq.getPassword() == null){ // password가 비어서 왔는지 확인
+                return new BaseResponse<>((POST_USERS_EMPTY_PASSWORD));
+            }
+            //올바른 email 형식인지 --> 후에, 중앙대학교 메일로만 받는것으로 수정 예정
+            if(! isRegexEmail(postLoginReq.getEmail())){
+                return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
+            }
+
+            PostAuthloginRes postAuthloginRes = authService.authlogin(postLoginReq);
+
+            return new BaseResponse<>(postAuthloginRes);
+
+        } catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+}
