@@ -6,8 +6,8 @@ com/example/demo/src/Event/model/PostEventReq.java
  com.example.demo.src.Event.model.PostEventReq
 com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
-com/example/demo/src/Event/PhotoRepository.java
- com.example.demo.src.Event.PhotoRepository
+com/example/demo/src/Event/EventRepository.java
+ com.example.demo.src.Event.EventRepository
 com/example/demo/src/auth/model/User.java
  com.example.demo.src.auth.model.User
 com/example/demo/src/user/model/DeleteUserReq.java
@@ -97,7 +97,9 @@ com/example/demo/src/user/UserRepository.java
  com.example.demo.src.user.UserRepository
 com/example/demo/src/Event/model/Event.java
  com.example.demo.src.Event.model.Event
-com/example/demo/src/Event/EventRepository.java
- com.example.demo.src.Event.EventRepository
+com/example/demo/src/Event/model/GetEventListRes.java
+ com.example.demo.src.Event.model.GetEventListRes
+com/example/demo/src/Event/PhotoRepository.java
+ com.example.demo.src.Event.PhotoRepository
 com/example/demo/src/Event/EventController.java
  com.example.demo.src.Event.EventController

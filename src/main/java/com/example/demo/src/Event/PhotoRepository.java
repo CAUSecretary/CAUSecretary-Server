@@ -18,8 +18,8 @@ public interface PhotoRepository extends JpaRepository<Photo,Integer> {
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE From Event where userIdx = ?1 and eventIdx = ?2", nativeQuery = true)
-    boolean deleteByUserIdxAndEventIdx(int userIdx, int eventIdx);
+    @Query(value = "DELETE From Photo where userIdx = ?1 and eventIdx = ?2", nativeQuery = true)
+    int deleteByUserIdxAndEventIdx(int userIdx, int eventIdx);
 
 
 

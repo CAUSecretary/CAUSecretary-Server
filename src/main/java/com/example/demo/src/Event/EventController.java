@@ -10,6 +10,7 @@ import com.example.demo.src.auth.model.PostLoginRes;
 import com.example.demo.src.user.UserDao;
 import com.example.demo.src.user.model.PostUserRes;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -193,7 +194,6 @@ public class EventController {
     }
 
 
-
     @PatchMapping(value = "/event/post/{userIdx}", consumes = {"application/json", "text/xml"}, produces =  {"application/json", "text/xml"})
     public String patchEvent(@RequestBody PatchEventReq patchEventReq) throws BaseException{
         System.out.println("게시글 수정에 진입");
@@ -221,16 +221,68 @@ public class EventController {
         }
 
 
-
         return "200";
 
 
 
+    }
 
+
+//    private int userIdx; //이벤트 발급한 유저 학번
+//    private int eventIdx; //이벤트 고유 아이디
+//    private String eventName; //이벤트 이름
+//    private String period; //이벤트 진행 기간
+//    private LocalDateTime createdAt; //이벤트 생성 시간
+//     @Query(value = "SELECT userIdx, eventIdx, eventName, period,createdAt From Event where userIdx = ?1",nativeQuery = true)
+    @ResponseBody
+    @GetMapping(value = "/get/all/evnet/{userIdx}")
+    public BaseResponse<List<GetEventListRes>>showEventList(@PathVariable("userIdx") int userIdx){
+        List<Object[]> results = eventRepository.showEvnetListByuserIdx(userIdx);
+        System.out.println(results.toString());
+        JSONArray request = new JSONArray();
+         for(Object[] result : results){
+             GetEventListRes getEventListRes = new GetEventListRes(
+                     Integer.parseInt(result[0].toString()), //useridx
+                     Integer.parseInt(result[1].toString()), //eventidx
+                     result[2].toString(), //eventname
+                     result[3].toString(), //period
+                     result[4].toString() //createdAt
+             );
+             request.add(getEventListRes);
+
+
+         }
+
+        return new BaseResponse<>(request);
 
 
 
     }
+
+    @ResponseBody
+    @DeleteMapping(value = "/delete/evnet/{userIdx}/{eventIdx}")
+    public BaseResponse<String> DeleteEvent(@PathVariable("userIdx") int userIdx, @PathVariable("eventIdx") int eventIdx) throws Exception, BaseException {
+        String response = "";
+        try{
+            int event_check = eventRepository.deleteByUserIdxAndEventIdx(userIdx,eventIdx);
+            int photo_check = photoRepository.deleteByUserIdxAndEventIdx(userIdx,eventIdx);
+            System.out.println(event_check);
+            System.out.println(photo_check);
+            response = "success";
+
+            return new BaseResponse<>(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = "fail";
+
+            return new BaseResponse<>(response);
+        }
+
+
+
+    }
+
 
     
 

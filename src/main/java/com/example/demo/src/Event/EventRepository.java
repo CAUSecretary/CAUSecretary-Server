@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,10 +30,14 @@ public interface EventRepository  extends JpaRepository<Event, Integer> {
     @Transactional
     @Modifying
     @Query(value = "DELETE From Event where userIdx = ?1 and eventIdx = ?2", nativeQuery = true)
-    boolean deleteByUserIdxAndEventIdx(int userIdx, int eventIdx);
+    int deleteByUserIdxAndEventIdx(int userIdx, int eventIdx);
 
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE Event e SET e.contents = :contents Where e.userIdx = :userIdx and e.eventIdx = :eventIdx",nativeQuery = true)
     int updateContentsByUserIdxAndEventIdx(String contents, int userIdx,int eventIdx);
+
+
+    @Query(value = "SELECT userIdx, eventIdx, eventName, period,createdAt From Event where userIdx = ?1",nativeQuery = true)
+    List<Object[]> showEvnetListByuserIdx(int userIdx);
 }
