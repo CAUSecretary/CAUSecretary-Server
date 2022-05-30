@@ -7,14 +7,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
 public interface EventRepository  extends JpaRepository<Event, Integer> {
 
 
-    @Query(value = "SELECT eventIdx From Event where userIdx = ?1 and instaUrl = ?2", nativeQuery = true)
-    int sellectEventIdx(int userIdx, String instaUrl);
+//    @Query(value = "SELECT eventIdx From Event where userIdx = ?1 and instaUrl = ?2", nativeQuery = true)
+//    int sellectEventIdx(int userIdx, String instaUrl);
+    @Query(value = "SELECT eventIdx From Event where userIdx = ?1 and createdAt = ?2", nativeQuery = true)
+    int sellectEventIdx(int userIdx, LocalDateTime createdAt);
 
     @Query(value = "SELECT * From Event where userIdx = ?1 and eventIdx = ?2", nativeQuery = true)
     Event sellectByUserIdxAndEventIdx(int userIdx, int eventIdx);

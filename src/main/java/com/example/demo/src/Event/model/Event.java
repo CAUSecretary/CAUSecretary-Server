@@ -5,6 +5,7 @@ package com.example.demo.src.Event.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -47,6 +48,15 @@ public class Event {
 
     @Column(length = 10000)
     String contents; //게시글 내용
+
+
+    //이 부분 수정 중
+
+    private LocalDateTime createdAt;
+    @PrePersist
+    public void createdAt() {
+        this.createdAt = LocalDateTime.now();
+    }
 
 
 

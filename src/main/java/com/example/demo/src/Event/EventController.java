@@ -19,6 +19,7 @@ import com.example.demo.src.Event.EventRepository;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -119,8 +120,11 @@ public class EventController {
             event.setInstaUrl(postEventReq.getInstaUrl());
             eventRepository.save(event); //event저장
             int userIdx = event.getUserIdx();
+            //eventIdx 발급 조건을 userIdx와, 발급 시간을 기준으로 변경.
+            LocalDateTime createdAt = event.getCreatedAt();
             //발급된 event idx 가져옴
-            int eventIdx = eventRepository.sellectEventIdx(userIdx, event.getInstaUrl());
+            int eventIdx = eventRepository.sellectEventIdx(userIdx, createdAt);
+            //int eventIdx = eventRepository.sellectEventIdx(userIdx, event.getInstaUrl());
             System.out.println("발급된 eventIdx"+eventIdx);
             //InstagramCrawler crawler = new InstagramCrawler(Integer.toString(eventIdx), Integer.toString(event.getUserIdx()), event.getInstaUrl());
             //crawler.start();
