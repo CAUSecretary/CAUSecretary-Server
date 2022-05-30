@@ -26,72 +26,51 @@ import java.util.List;
 @RestController
 public class EventController {
 
-
+    @Autowired
     EventRepository eventRepository;
+    @Autowired
     PhotoRepository photoRepository;
+    @Autowired
+    EventPointRepository eventPointRepository;
+    @Autowired
     private final EventDao eventDao;
 
 
-    public EventController (EventRepository eventRepository, PhotoRepository photoRepository, EventDao eventDao){
+    public EventController (EventRepository eventRepository, PhotoRepository photoRepository, EventDao eventDao, EventPointRepository eventPointRepository){
         super();
         this.eventRepository = eventRepository;
         this.photoRepository = photoRepository;
         this.eventDao = eventDao;
+        this.eventPointRepository = eventPointRepository;
+    }
+
+
+    @ResponseBody
+    @PostMapping(value = "/event/create/point")
+    public BaseResponse<Integer> createPoint(@RequestBody PostPointReq postPointReq){
+        double latitude = postPointReq.getLatitude();
+        double longitude = postPointReq.getLongitude();
+        System.out.println(latitude+longitude);
+        EventPoint eventPoint = new EventPoint(latitude,longitude);
+
+        System.out.println(eventPoint.toString());
+
+        EventPoint savedPoint = eventPointRepository.save(eventPoint);
+        System.out.println(savedPoint.toString());
+        int pointIdx = savedPoint.getPointIdx();
+
+        return new BaseResponse<>(pointIdx);
+
+
     }
 
 
 
 
-//    @PostMapping(value = "/event/{userIdx}")
-//    public BaseResponse<PostEventRes> createEvent(Event event) throws BaseException {
-//        // jwt 식별 코드 추가해야 됨.
-//
-//
-//        System.out.println("진입");
-//
-//        eventRepository.save(event);
-//        int userIdx = event.getUserIdx();
-//        int eventIdx = eventRepository.sellectEventIdx(userIdx, event.getInstaUrl());
-//        //InstagramCrawler crawler = new InstagramCrawler(Integer.toString(eventIdx), Integer.toString(event.getUserIdx()), event.getInstaUrl());
-//        //crawler.start();
-//        InstagramCrawler.create(Integer.toString(eventIdx), Integer.toString(event.getUserIdx()), event.getInstaUrl());
-//
-//        List<String> imgList = photoRepository.sellectAllImgurl(userIdx, eventIdx);
-//
-//        Event savedEvent = eventRepository.sellectByUserIdxAndEventIdx(userIdx, eventIdx);
-//        String contents = eventRepository.sellectContents(userIdx, eventIdx);
-//        System.out.println("contents: " + contents);
-//        //List<Event> savedEvent = eventRepository.findAll();
-//        System.out.println(savedEvent.toString());
-//        PostEventRes postEventRes = new PostEventRes(
-//                savedEvent.getEventIdx(),
-//                savedEvent.getEventIdx(),
-//                savedEvent.getPointIdx(),
-//                savedEvent.getOnOff(),
-//                savedEvent.getEventName(),
-//                savedEvent.getBelong(),
-//                savedEvent.getKakaoChatUrl(),
-//                savedEvent.getPhone(),
-//                savedEvent.getPeriod(),
-//                //savedEvent.getContents(),
-//                contents,
-//                imgList);
-//
-//
-//
-//        System.out.println(postEventRes);
-//
-//       return new BaseResponse<>(postEventRes);
-//
-//
-//    }
-//
-
 
     @PostMapping(value = "/event/create")
     public BaseResponse<PostEventRes> createEvent(@RequestBody PostEventReq postEventReq) throws Exception, BaseException {
         // jwt 식별 코드 추가해야 됨.
-
 
         System.out.println("진입 했습니다. /event/create");
         System.out.println(postEventReq.toString()); //받은값
@@ -282,6 +261,8 @@ public class EventController {
 
 
     }
+
+
 
 
     

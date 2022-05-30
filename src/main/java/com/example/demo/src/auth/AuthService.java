@@ -69,9 +69,10 @@ public class AuthService {
         if(user.getPassword().equals(encryptPwd)){
             //일치하면 해당 userIdx 를 받아옴
             int userIdx = user.getUserIdx();
+            String certified = user.getCertified();
             //userIdx를 이용해서 jwt 토큰 생성
             String jwt = jwtService.createJwt(userIdx);
-            return new PostLoginRes(userIdx, jwt); //토큰발급
+            return new PostLoginRes(userIdx, jwt,certified); //토큰발급
         } else {
             throw new BaseException(FAILED_TO_LOGIN);
         }

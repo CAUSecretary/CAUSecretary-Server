@@ -54,7 +54,6 @@ public class AuthController {
             }
             //올바른 email 형식인지 --> 후에, 중앙대학교 메일로만 받는것으로 수정 예정
             if(!isRegexEmail(postLoginReq.getEmail())){
-                System.out.println("여기임");
                 return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
             }
 

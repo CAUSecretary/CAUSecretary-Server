@@ -11,5 +11,6 @@ public class PostLoginRes {
     //login 성공하면 userIdx와 jwt return함.
     private int userIdx;
     private String jwt;
+    private String certified;
 
 }
