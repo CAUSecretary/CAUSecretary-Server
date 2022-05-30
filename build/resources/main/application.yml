@@ -28,16 +28,16 @@ spring:
 
 
 
-#
-#  #data:
-#  datasource:
-#    maria:
-#      jdbc-url: jdbc:mariadb://causecretary.cwtzlobuufiz.us-east-1.rds.amazonaws.com:3306/causecretary?useUnicode=yes&characterEncoding=UTF-8
-#      driver-class-name: org.mariadb.jdbc.Driver
-#      username: causecretary
-#      password: smilecau1234
-#      hikari:
-#        connectionInitSql: "SET NAMES 'utf8mb4'"
+  #
+  #  #data:
+  #  datasource:
+  #    maria:
+  #      jdbc-url: jdbc:mariadb://causecretary.cwtzlobuufiz.us-east-1.rds.amazonaws.com:3306/causecretary?useUnicode=yes&characterEncoding=UTF-8
+  #      driver-class-name: org.mariadb.jdbc.Driver
+  #      username: causecretary
+  #      password: smilecau1234
+  #      hikari:
+  #        connectionInitSql: "SET NAMES 'utf8mb4'"
 
   jpa:
     open-in-view: true

@@ -105,7 +105,7 @@ public class AuthService {
             int userIdx = user.getUserIdx();
             String filepath = "/Users/chaehuiseon/chs_documents/caucap/befor_certification/";
 
-            JSONObject jsonObject = new JSONObject();
+
             JSONArray userArray = new JSONArray();
             if ( userIdx == 1){ //관리자다.. --> 관리자가 맞다.
 
@@ -134,16 +134,16 @@ public class AuthService {
                         System.out.println("Exception while reading the Image " + ioe);
                     }
                     JSONObject userInfo = new JSONObject();
-                    userInfo.put("name",result[1].toString());
+                    userInfo.put("userIdx",result[0].toString());//미인증 유저학번
+                    userInfo.put("name",result[1].toString());//미인증 유저이름
                     userInfo.put("belong",result[2].toString());
                     userInfo.put("certifyImg",base64Image);
-
+                    //userInfo.put("certifyImg","이미지인뎅");
+                    //System.out.println(userInfo.toJSONString());
                     userArray.add(userInfo);
-                    jsonObject.put(result[0].toString(),userArray);
 
 
                 }
-                jsonObject.put("uncertified",userArray);
 
 
 
@@ -153,7 +153,7 @@ public class AuthService {
             }
             //userIdx를 이용해서 jwt 토큰 생성
             String jwt = jwtService.createJwt(userIdx);
-            return new PostAuthloginRes(userIdx, jwt,jsonObject); //토큰발급
+            return new PostAuthloginRes(userIdx, jwt,userArray); //토큰발급
         } else {
             throw new BaseException(FAILED_TO_LOGIN);
         }
@@ -162,6 +162,29 @@ public class AuthService {
 
         //return new PostLoginRes(userIdx, jwt);
 
+    }
+
+    public String certify(int userIdx, String belong) throws BaseException{
+
+
+        int check = userRepository.updatecertified("S",userIdx,belong);
+        if(check == 1){
+            System.out.println("update성공");
+        }else{
+            throw  new  BaseException(PATCH_USER_CERTIFIED_FAIL);
+        }
+        return "success";
+
+
+    }
+
+    public String checkcertified(int userIdx, String belong) throws BaseException{
+        String check = userRepository.checkcertified(userIdx,belong);
+        if(check.equals("F") || check.equals("S") ){
+            return check;
+        }else{
+            throw new BaseException(CHECK_USER_CERTIFIED_FAIL);
+        }
     }
 
 

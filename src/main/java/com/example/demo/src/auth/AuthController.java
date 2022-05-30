@@ -71,6 +71,7 @@ public class AuthController {
 
 
 
+    //관리자 로그인
     @ResponseBody
     @PostMapping("/authlogin")
     public BaseResponse<PostAuthloginRes> authlogIn(@RequestBody PostLoginReq postLoginReq) throws Exception{
@@ -90,6 +91,8 @@ public class AuthController {
 
             PostAuthloginRes postAuthloginRes = authService.authlogin(postLoginReq);
 
+            System.out.println("보내기직전 잘감");
+            System.out.println(postAuthloginRes.getJwt());
             return new BaseResponse<>(postAuthloginRes);
 
         } catch (BaseException exception){
@@ -98,6 +101,38 @@ public class AuthController {
         }
 
     }
+
+
+    @ResponseBody
+    @PatchMapping("/certify")
+    public BaseResponse<String> certify(@RequestParam int userIdx, @RequestParam String belong) throws BaseException {
+        System.out.println(userIdx + belong);
+        try{
+            String check = authService.checkcertified(userIdx, belong);
+            String result = "";
+            if(check.equals("F")){
+                result = authService.certify(userIdx,belong);
+
+            }
+            else if(check.equals("S")){
+                result = "이미 인증이 된 유저";
+            }else{
+                result = "뭔가 잘못됨";
+            }
+            return new BaseResponse<>(result);
+
+
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+
+    }
+
+
+
+
+
 
 
 

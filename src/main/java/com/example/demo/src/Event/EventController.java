@@ -92,7 +92,7 @@ public class EventController {
 
 
         System.out.println("진입 했습니다. /event/create");
-        System.out.println(postEventReq.toString());
+        System.out.println(postEventReq.toString()); //받은값
         int instacralwer =  postEventReq.getInstacralwer();
         //초기화
         PostEventRes rtEventRes = new PostEventRes(0,0,0,
@@ -121,6 +121,7 @@ public class EventController {
             int userIdx = event.getUserIdx();
             //발급된 event idx 가져옴
             int eventIdx = eventRepository.sellectEventIdx(userIdx, event.getInstaUrl());
+            System.out.println("발급된 eventIdx"+eventIdx);
             //InstagramCrawler crawler = new InstagramCrawler(Integer.toString(eventIdx), Integer.toString(event.getUserIdx()), event.getInstaUrl());
             //crawler.start();
             //크롤링 시작
