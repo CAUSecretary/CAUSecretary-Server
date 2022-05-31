@@ -19,8 +19,8 @@ com/example/demo/config/PagingRes.java
 com/example/demo/src/Event/model/EventPoint.java
  com.example.demo.src.Event.model.EventPoint
  com.example.demo.src.Event.model.EventPoint$EventPointBuilder
-com/example/demo/src/auth/AuthService.java
- com.example.demo.src.auth.AuthService
+com/example/demo/src/Event/model/Photo.java
+ com.example.demo.src.Event.model.Photo
 com/example/demo/src/auth/model/PostAuthloginRes.java
  com.example.demo.src.auth.model.PostAuthloginRes
 com/example/demo/config/secret/Secret.java
@@ -40,8 +40,8 @@ com/example/demo/config/BaseResponsePaging.java
  com.example.demo.config.BaseResponsePaging
 com/example/demo/src/Event/InstagramCrawler.java
  com.example.demo.src.Event.InstagramCrawler
-com/example/demo/src/user/UserService.java
- com.example.demo.src.user.UserService
+com/example/demo/src/Event/model/GetEventinfoRes.java
+ com.example.demo.src.Event.model.GetEventinfoRes
 com/example/demo/src/auth/model/PostLoginRes.java
  com.example.demo.src.auth.model.PostLoginRes
 com/example/demo/config/BaseException.java
@@ -86,10 +86,10 @@ com/example/demo/src/Event/model/GetEventListRes.java
 com/example/demo/src/auth/model/PostLoginReq.java
  com.example.demo.src.auth.model.PostLoginReq
  com.example.demo.src.auth.model.PostLoginReq$PostLoginReqBuilder
-com/example/demo/src/user/UserController.java
- com.example.demo.src.user.UserController
-com/example/demo/src/auth/AuthController.java
- com.example.demo.src.auth.AuthController
+com/example/demo/src/user/UserProvider.java
+ com.example.demo.src.user.UserProvider
+com/example/demo/src/Event/EventController.java
+ com.example.demo.src.Event.EventController
 com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
  com.example.demo.src.user.model.User$UserBuilder
@@ -109,11 +109,11 @@ com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/auth/model/User.java
  com.example.demo.src.auth.model.User
-com/example/demo/src/user/UserProvider.java
- com.example.demo.src.user.UserProvider
-com/example/demo/src/Event/model/Photo.java
- com.example.demo.src.Event.model.Photo
-com/example/demo/src/Event/model/GetEventinfoRes.java
- com.example.demo.src.Event.model.GetEventinfoRes
-com/example/demo/src/Event/EventController.java
- com.example.demo.src.Event.EventController
+com/example/demo/src/auth/AuthController.java
+ com.example.demo.src.auth.AuthController
+com/example/demo/src/user/UserService.java
+ com.example.demo.src.user.UserService
+com/example/demo/src/auth/AuthService.java
+ com.example.demo.src.auth.AuthService
+com/example/demo/src/user/UserController.java
+ com.example.demo.src.user.UserController

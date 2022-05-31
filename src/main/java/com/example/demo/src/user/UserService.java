@@ -12,6 +12,7 @@ import com.example.demo.utils.SHA256;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,9 @@ import static com.example.demo.config.BaseResponseStatus.*;
 @Service
 public class UserService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Value("${file.path}")
+    String filepath;
 
     private final UserDao userDao;
     private final UserProvider userProvider;
@@ -78,7 +82,7 @@ public class UserService {
                 String prefix = "png";
                 filename = postUserReq.getEmail()+"."+prefix;
                 System.out.println("filename: "+filename);
-                String filepath = "/Users/chaehuiseon/chs_documents/caucap/befor_certification/";
+                //String filepath = "/Users/chaehuiseon/chs_documents/caucap/befor_certification/";
 
                 //파일 없으면 만들자!
                 File folder = new File(filepath);

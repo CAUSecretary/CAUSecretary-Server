@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -29,6 +30,9 @@ import static com.example.demo.config.BaseResponseStatus.*;
 @Service
 public class AuthService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Value("${file.path}")
+    String filepath;
 
     private final AuthDao authDao;
     private final AuthProvider authProvider;
@@ -118,7 +122,7 @@ public class AuthService {
     public GetAuthUncertifiedRes getUncertificationUserList()  throws BaseException {
 
 
-        String filepath = "/Users/chaehuiseon/chs_documents/caucap/befor_certification/";
+        //String filepath = "/Users/chaehuiseon/chs_documents/caucap/befor_certification/";
         JSONArray userArray = new JSONArray();
 
         //미인증된 유저들을 모두가져와라
