@@ -40,4 +40,21 @@ public interface EventRepository  extends JpaRepository<Event, Integer> {
 
     @Query(value = "SELECT userIdx, eventIdx, eventName, period,createdAt From Event where userIdx = ?1",nativeQuery = true)
     List<Object[]> showEvnetListByuserIdx(int userIdx);
+
+
+//    @Query(value = "SELECT pointIdx, eventIdx, belong, OnOff, period From Event", nativeQuery = true)
+//    List<Object[]> showMainPage();
+    @Query(value = "SELECT E.eventIdx, E.eventName, E.belong,E.period, E.pointIdx,EP.latitude,EP.longitude,EP.location\n" +
+            "FROM Event AS E\n" +
+            "    INNER JOIN EventPoint AS EP on E.pointIdx = EP.pointIdx\n" +
+            "WHERE OnOff = ?1", nativeQuery = true)
+    List<Object[]> showMainPage(int OnOff);
+
+
+    @Query(value = "SELECT eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx FROM Event\n"+
+            "WHERE eventIdx = ?1", nativeQuery = true)
+    List<Object[]> showEachEvent(int eventIdx);
+
+
+
 }

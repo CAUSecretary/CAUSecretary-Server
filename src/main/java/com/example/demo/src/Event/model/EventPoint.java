@@ -24,11 +24,12 @@ public class EventPoint { //건물이 데이터로 들어올 때,refactory를 �
     private double latitude;
     @Column
     private double longitude;
-//    @Column
-//    private String building;
+    @Column
+    private String location;
 
-    public EventPoint(double latitude, double longitude) {
+    public EventPoint(double latitude, double longitude,String location) {
         this.latitude = latitude;
         this.longitude = longitude;
+        this.location = location;
     }
 }

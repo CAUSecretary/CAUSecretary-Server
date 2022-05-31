@@ -27,5 +27,22 @@ public class EventDao {
         return check;
     }
 
+    public int checkEventExist(int eventIdx){
+        String checkEventExistQuery = "select exists(select * from Event where eventIdx = ? )";
+        int checkEventIdxParams = eventIdx;
+        int check = this.jdbcTemplate.queryForObject(checkEventExistQuery,
+                int.class,checkEventIdxParams);
+        System.out.println("check :"+check);
+        return check;
+    }
+    public int checkPhotoExist(int eventIdx){
+        String checkEventExistQuery = "select exists(select * from Photo where eventIdx = ? )";
+        int checkEventIdxParams = eventIdx;
+        int check = this.jdbcTemplate.queryForObject(checkEventExistQuery,
+                int.class,checkEventIdxParams);
+        System.out.println("check :"+check);
+        return check;
+    }
+
 
 }

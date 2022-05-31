@@ -1,10 +1,7 @@
 package com.example.demo.src.auth;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.src.auth.model.PostAuthloginRes;
-import com.example.demo.src.auth.model.PostLoginReq;
-import com.example.demo.src.auth.model.PostLoginRes;
-import com.example.demo.src.auth.model.User;
+import com.example.demo.src.auth.model.*;
 import com.example.demo.src.user.UserDao;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserRepository;
@@ -101,60 +98,13 @@ public class AuthService {
         }
 
         //DB에 저장되어 있는 비밀번호와 일치히는지를 확인함.
-        if(user.getPassword().equals(encryptPwd)){
+        if(user.getPassword().equals(encryptPwd)) {
             //일치하면 해당 userIdx 를 받아옴.
             int userIdx = user.getUserIdx();
-            String filepath = "/Users/chaehuiseon/chs_documents/caucap/befor_certification/";
 
-
-            JSONArray userArray = new JSONArray();
-            if ( userIdx == 1){ //관리자다.. --> 관리자가 맞다.
-
-                //미인증된 유저들을 모두가져와라
-                List<Object[]> results = userRepository.sellectAllUser("F");
-
-                for(Object[] result : results){
-                    String base64Image = "";
-                    String filename = result[3].toString();
-                    System.out.println("filename : "+filename);
-                    File file = new File(filepath+filename);
-                    try {
-                        FileInputStream imageInFile = new FileInputStream(file);
-                        // Reading a Image file from file system
-                        byte imageData[] = new byte[(int) file.length()];
-                        imageInFile.read(imageData);
-                        //아래 java.util.Base64.getEncoder().encodeToString(); 는
-                        //인코딩의 일부로 "/" "="및 "+"를 사용하여 "standard"base64를 만듭니다. URL 안전하지 않습니다.
-                        //base64Image = Base64.getEncoder().encodeToString(imageData).;
-                        //따라서,import org.apache.tomcat.util.codec.binary.Base64; 를 사용.
-                        base64Image = Base64.encodeBase64String(imageData);
-                        imageInFile.close();
-                    } catch (FileNotFoundException e) {
-                        System.out.println("Image not found" + e);
-                    } catch (IOException ioe) {
-                        System.out.println("Exception while reading the Image " + ioe);
-                    }
-                    JSONObject userInfo = new JSONObject();
-                    userInfo.put("userIdx",result[0].toString());//미인증 유저학번
-                    userInfo.put("name",result[1].toString());//미인증 유저이름
-                    userInfo.put("belong",result[2].toString());
-                    userInfo.put("certifyImg",base64Image);
-                    //userInfo.put("certifyImg","이미지인뎅");
-                    //System.out.println(userInfo.toJSONString());
-                    userArray.add(userInfo);
-
-
-                }
-
-
-
-            }
-            else{//관리자 비번이나 이메일이 잘못되었음.
-                throw new BaseException(FAILED_TO_LOGIN);
-            }
-            //userIdx를 이용해서 jwt 토큰 생성
-            String jwt = jwtService.createJwt(userIdx);
-            return new PostAuthloginRes(userIdx, jwt,userArray); //토큰발급
+        //userIdx를 이용해서 jwt 토큰 생성
+        String jwt = jwtService.createJwt(userIdx);
+        return new PostAuthloginRes(userIdx, jwt); //토큰발급
         } else {
             throw new BaseException(FAILED_TO_LOGIN);
         }
@@ -165,6 +115,55 @@ public class AuthService {
 
     }
 
+    public GetAuthUncertifiedRes getUncertificationUserList()  throws BaseException {
+
+
+        String filepath = "/Users/chaehuiseon/chs_documents/caucap/befor_certification/";
+        JSONArray userArray = new JSONArray();
+
+        //미인증된 유저들을 모두가져와라
+        List<Object[]> results = userRepository.sellectAllUser("F");
+
+        for (Object[] result : results) {
+            String base64Image = "";
+            String filename = result[3].toString();
+            System.out.println("filename : " + filename);
+            File file = new File(filepath + filename);
+            try {
+                FileInputStream imageInFile = new FileInputStream(file);
+                // Reading a Image file from file system
+                byte imageData[] = new byte[(int) file.length()];
+                imageInFile.read(imageData);
+                //아래 java.util.Base64.getEncoder().encodeToString(); 는
+                //인코딩의 일부로 "/" "="및 "+"를 사용하여 "standard"base64를 만듭니다. URL 안전하지 않습니다.
+                //base64Image = Base64.getEncoder().encodeToString(imageData).;
+                //따라서,import org.apache.tomcat.util.codec.binary.Base64; 를 사용.
+                base64Image = Base64.encodeBase64String(imageData);
+                imageInFile.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("Image not found" + e);
+            } catch (IOException ioe) {
+                System.out.println("Exception while reading the Image " + ioe);
+            }
+            JSONObject userInfo = new JSONObject();
+            userInfo.put("userIdx", result[0].toString());//미인증 유저학번
+            userInfo.put("name", result[1].toString());//미인증 유저이름
+            userInfo.put("belong", result[2].toString());
+            userInfo.put("certifyImg", base64Image);
+            //userInfo.put("certifyImg","이미지인뎅");
+            //System.out.println(userInfo.toJSONString());
+            userArray.add(userInfo);
+
+        }
+
+        return new GetAuthUncertifiedRes(userArray);
+
+        //GET_UNCERTIFICATION_USER_FAIL
+
+
+    }
+
+    //인증
     public String certify(int userIdx, String belong) throws BaseException{
 
 
@@ -179,6 +178,7 @@ public class AuthService {
 
     }
 
+    //인증상태 확인
     public String checkcertified(int userIdx, String belong) throws BaseException{
         String check = userRepository.checkcertified(userIdx,belong);
         if(check.equals("F") || check.equals("S") ){

@@ -11,6 +11,7 @@ import com.example.demo.src.user.UserDao;
 import com.example.demo.src.user.model.PostUserRes;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class EventController {
@@ -50,17 +54,14 @@ public class EventController {
     public BaseResponse<Integer> createPoint(@RequestBody PostPointReq postPointReq){
         double latitude = postPointReq.getLatitude();
         double longitude = postPointReq.getLongitude();
+        String location = postPointReq.getLocation();
         System.out.println(latitude+longitude);
-        EventPoint eventPoint = new EventPoint(latitude,longitude);
-
+        EventPoint eventPoint = new EventPoint(latitude,longitude,location);
         System.out.println(eventPoint.toString());
-
         EventPoint savedPoint = eventPointRepository.save(eventPoint);
         System.out.println(savedPoint.toString());
         int pointIdx = savedPoint.getPointIdx();
-
         return new BaseResponse<>(pointIdx);
-
 
     }
 
@@ -77,8 +78,8 @@ public class EventController {
         int instacralwer =  postEventReq.getInstacralwer();
         //초기화
         PostEventRes rtEventRes = new PostEventRes(0,0,0,
-                0,null,null,null,null,null,
-                null,null,0);
+                0,"","","","","",
+                "",null,0);
 
         Event event = new Event();
         event.setUserIdx(postEventReq.getUserIdx());
@@ -179,7 +180,7 @@ public class EventController {
         int userIdx = patchEventReq.getUserIdx();
         int eventIdx = patchEventReq.getEventIdx();
         if ( eventDao.checkEventExist(eventIdx,userIdx) == 0){ //존재 검사
-            throw new BaseException(PATCH_EVENT_EXISTS);
+            throw new BaseException(EVENT_EXISTS);
         }
 
         //존재함 ->
@@ -261,6 +262,89 @@ public class EventController {
 
 
     }
+
+
+
+    @ResponseBody
+    @GetMapping(value = "/get/all/event/main/{OnOff}")
+    public BaseResponse<List<GetMainPageRes>> showMainPage(@PathVariable("OnOff") int OnOff){
+        List<Object[]> eventdatas = eventRepository.showMainPage(OnOff);
+        JSONArray request = new JSONArray();
+        for(Object[] eventdata : eventdatas){
+            //Online
+            double latitude = 0.0;
+            double longitude =  0.0;
+            String location = "";
+
+            if(OnOff == 1){ //Offline
+                latitude = Double.parseDouble(eventdata[5].toString());
+                longitude =  Double.parseDouble(eventdata[6].toString());
+                location = eventdata[7].toString();
+
+            }
+            GetMainPageRes getMainPageRes = new GetMainPageRes(
+                    Integer.parseInt(eventdata[0].toString()), //eventIdx
+                    eventdata[1].toString(),//eventName
+                    eventdata[2].toString(), //belong
+                    eventdata[3].toString(), //period
+                    Integer.parseInt(eventdata[4].toString()), //pointIdx
+                    latitude, longitude, location
+            );
+            request.add(getMainPageRes);
+
+        }
+
+        return new BaseResponse<>(request);
+
+
+    }
+
+    // eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx
+
+    @ResponseBody
+    @GetMapping(value = "/get/each/event/main/{eventIdx}")
+    public BaseResponse<GetEventinfoRes> showEachEventInfo(@PathVariable("eventIdx") int eventIdx) throws BaseException {
+
+        if ( eventDao.checkEventExist(eventIdx) == 0){ //존재 검사
+            throw new BaseException(EVENT_EXISTS);//존재안함
+        }
+        //존재함
+        List<Object[]> event = eventRepository.showEachEvent(eventIdx);
+        GetEventinfoRes getEventinfoRes = new GetEventinfoRes("","",
+                "","","","",Arrays.asList(""));
+        //eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx
+        for(Object[] info : event){
+            List<String> imgs ;
+            if ( eventDao.checkPhotoExist(eventIdx) == 0){ //존재 검사
+                imgs = new ArrayList<>(Arrays.asList(""));
+            }else{
+                int userIdx = Integer.parseInt(info[7].toString());
+                imgs = photoRepository.sellectAllImgurl(userIdx,eventIdx);
+            }
+            System.out.println(imgs.toString());
+            for(Object data : info){
+                System.out.println(data);
+            }
+
+            System.out.println("여기까진와?");
+            getEventinfoRes = new GetEventinfoRes(
+                    info[1].toString(), info[2].toString(),
+                    info[3].toString(), info[4].toString(),
+                    info[5].toString(), info[6].toString(), imgs);
+
+        }
+        System.out.println(getEventinfoRes.toString());
+        return new BaseResponse<>(getEventinfoRes);
+
+
+
+    }
+
+//    @ResponseBody
+//    @GetMapping(value = "/")
+
+
+
 
 
 

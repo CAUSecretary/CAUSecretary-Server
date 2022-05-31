@@ -2,6 +2,7 @@ package com.example.demo.src.auth;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.config.BaseResponseStatus;
+import com.example.demo.src.auth.model.GetAuthUncertifiedRes;
 import com.example.demo.src.auth.model.PostAuthloginRes;
 import com.example.demo.src.auth.model.PostLoginReq;
 import com.example.demo.src.auth.model.PostLoginRes;
@@ -13,8 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.demo.config.BaseResponseStatus.POST_USERS_EMPTY_PASSWORD;
-import static com.example.demo.config.BaseResponseStatus.POST_USERS_INVALID_EMAIL;
+import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
 
 @RestController
@@ -100,16 +100,36 @@ public class AuthController {
         }
 
     }
+    @ResponseBody
+    @PostMapping("/uncertified")
+    public BaseResponse<GetAuthUncertifiedRes> getUncertificationUserList(@RequestParam int userIdx) throws BaseException {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            GetAuthUncertifiedRes getAuthUncertifiedRes = authService.getUncertificationUserList();
+
+            return new BaseResponse<>(getAuthUncertifiedRes);
+
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 
 
     @ResponseBody
-    @PatchMapping("/certify")
+    @PatchMapping("/certify")//인증
     public BaseResponse<String> certify(@RequestParam int userIdx, @RequestParam String belong) throws BaseException {
         System.out.println(userIdx + belong);
         try{
+
             String check = authService.checkcertified(userIdx, belong);
             String result = "";
             if(check.equals("F")){
+                //미인증 된 유저가 인증신청한것을 확인. 인증 절차 진행.
                 result = authService.certify(userIdx,belong);
 
             }

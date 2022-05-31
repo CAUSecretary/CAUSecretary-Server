@@ -40,13 +40,16 @@ public enum BaseResponseStatus {
 
     //event
 
-    PATCH_EVENT_EXISTS(false,2050,"evnet가 존재하지 않습니다."),
-    PATCH_EVENT_CONTENTS_FAIL(false,2051,"event 내용 update 실패"),
+    EVENT_EXISTS(false,2050,"evnet가 존재하지 않습니다."),
+    PHOTO_EXISTS(false,2051,"evnet가 존재하지 않습니다."),
+    PATCH_EVENT_CONTENTS_FAIL(false,2052,"event 내용 update 실패"),
+
 
     //auth
 
     PATCH_USER_CERTIFIED_FAIL(false,2080,"certify실패"),
     CHECK_USER_CERTIFIED_FAIL(false,2081,"certified 값 불러오기 실패 또는 유효하지 않은 값"),
+    GET_UNCERTIFICATION_USER_FAIL(false,2082,"미인증 유저 리스트 불러오기 실패"),
 
 
     /*
