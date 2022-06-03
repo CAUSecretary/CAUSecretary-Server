@@ -76,10 +76,12 @@ public class EventController {
         System.out.println("진입 했습니다. /event/create");
         System.out.println(postEventReq.toString()); //받은값
         int instacralwer =  postEventReq.getInstacralwer();
+        String[] imsi = new String[1];
+        Arrays.fill(imsi,"");
         //초기화
         PostEventRes rtEventRes = new PostEventRes(0,0,0,
                 0,"","","","","",
-                "",null,0);
+                "", Arrays.asList(imsi),0);
 
         Event event = new Event();
         event.setUserIdx(postEventReq.getUserIdx());
@@ -140,9 +142,12 @@ public class EventController {
 
 
         }else if(instacralwer == 0){
+            event.setContents("");
+            event.setInstaUrl("");
             Event savedEvent = eventRepository.save(event);
             int userIdx = event.getUserIdx();
             int eventIdx = savedEvent.getEventIdx();
+
             PostEventRes postEventRes = new PostEventRes(
                     savedEvent.getEventIdx(),
                     savedEvent.getUserIdx(),
@@ -155,7 +160,7 @@ public class EventController {
                     savedEvent.getPeriod(),
                     //savedEvent.getContents(),
                     "",
-                    null,
+                    Arrays.asList(imsi),
                     instacralwer);
 
 
@@ -172,6 +177,93 @@ public class EventController {
 
 
     }
+
+
+    @PostMapping(value = "/event/create/go")
+    public BaseResponse<PostEventRes> createEventgo(@RequestParam("userIdx")int userIdx, @RequestParam("eventName") String eventName, @RequestParam("instacralwer") int instacralwer) throws Exception, BaseException {
+        Event event = eventRepository.sllectAllByuserIdxandevnetName(userIdx, eventName);
+        List<String> imgs = photoRepository.sellectAllImgurl(userIdx, event.getEventIdx());
+        PostEventRes postEventRes =
+                new PostEventRes(
+                        event.getEventIdx(),
+                        event.getUserIdx(),
+                        event.getPointIdx(),
+                        event.getOnOff(),
+                        event.getEventName(),
+                        event.getBelong(),
+                        event.getKakaoChatUrl(),
+                        event.getPhone(),
+                        event.getPeriod(),
+                        event.getContents(),
+                        imgs,
+                        instacralwer
+
+                );
+        return new BaseResponse<>(postEventRes);
+
+
+    }
+
+
+
+
+
+
+
+
+    @PostMapping(value = "/event/create/imsi")
+    public String createEventImsi(@RequestBody PostEvent2Req postEvent2Req) throws Exception, BaseException {
+        // jwt 식별 코드 추가해야 됨.
+
+        System.out.println("진입 했습니다. /event/create");
+        System.out.println(postEvent2Req.toString()); //받은값
+        int instacralwer =  postEvent2Req.getInstacralwer();
+        String[] imsi = new String[1];
+        Arrays.fill(imsi,"");
+        //초기화
+        PostEventRes rtEventRes = new PostEventRes(0,0,0,
+                0,"","","","","",
+                "", Arrays.asList(imsi),0);
+
+        Event event = new Event();
+        event.setUserIdx(postEvent2Req.getUserIdx());
+        event.setPointIdx(postEvent2Req.getPointIdx());
+        event.setOnOff(postEvent2Req.getOnOff());
+        event.setEventName(postEvent2Req.getEventName());
+        event.setBelong(postEvent2Req.getBelong());
+        event.setKakaoChatUrl(postEvent2Req.getKakaoChatUrl());
+        event.setPhone(postEvent2Req.getPhone());
+        event.setPeriod(postEvent2Req.getPeriod());
+        event.setContents(postEvent2Req.getContents());
+        event.setInstaUrl(postEvent2Req.getInstaUrl());
+
+
+        System.out.println(event.toString());
+        System.out.println();
+
+        Event savedEvent = eventRepository.save(event);
+        System.out.println(savedEvent.toString());
+
+        List<String> imsi_photo = postEvent2Req.getImgs();
+        for(String p : imsi_photo){
+            Photo photo = new Photo();
+            photo.setEventIdx(savedEvent.getEventIdx());
+            photo.setUserIdx(savedEvent.getUserIdx());
+            photo.setImgurl(p);
+            Photo savedPhoto = photoRepository.save(photo);
+            System.out.println(savedPhoto.toString());
+        }
+
+
+        return "저장완료";
+
+
+    }
+
+
+
+
+
 
 
     @PatchMapping(value = "/event/post/{userIdx}", consumes = {"application/json", "text/xml"}, produces =  {"application/json", "text/xml"})
@@ -304,49 +396,64 @@ public class EventController {
     @ResponseBody
     @GetMapping(value = "/get/each/event/main/{eventIdx}")
     public BaseResponse<GetEventinfoRes> showEachEventInfo(@PathVariable("eventIdx") int eventIdx) throws BaseException {
-
+        System.out.println("진입"+eventIdx);
         if ( eventDao.checkEventExist(eventIdx) == 0){ //존재 검사
             throw new BaseException(EVENT_EXISTS);//존재안함
         }
         //존재함
         List<Object[]> event = eventRepository.showEachEvent(eventIdx);
+        //초기화
         GetEventinfoRes getEventinfoRes = new GetEventinfoRes("","",
-                "","","","",Arrays.asList(""));
+                "","","","",Arrays.asList(""),"");
         //eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx
         for(Object[] info : event){
             List<String> imgs ;
-            if ( eventDao.checkPhotoExist(eventIdx) == 0){ //존재 검사
-                imgs = new ArrayList<>(Arrays.asList(""));
-            }else{
-                int userIdx = Integer.parseInt(info[7].toString());
+            if ( eventDao.checkPhotoExist(eventIdx) == 0){ //이벤트 사진 갖고 있어?없어
+                imgs = new ArrayList<>(Arrays.asList("")); //빈칸
+            }else{//있어
+                int userIdx = Integer.parseInt(info[7].toString());//가지고와
                 imgs = photoRepository.sellectAllImgurl(userIdx,eventIdx);
             }
-            System.out.println(imgs.toString());
+            System.out.println("뭐 왔음????"+imgs.toString());
+            System.out.println("받아온거 보여줌");
             for(Object data : info){
                 System.out.println(data);
             }
 
+            //// eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx
+            /*
+                String eventName; 1
+                String belong; 2
+            String kakaoChatUrl; 3
+            String phone; 4
+            String period; 5
+            String contents; 6
+            List<String> imgs;
+
+             */
             System.out.println("여기까진와?");
+            System.out.println("aaaaa"+
+                    info[1].toString()+ info[2].toString()+
+                    info[3].toString() +info[4].toString()+
+                    info[5].toString() + info[6].toString()+ imgs);
+
+            EventPoint eventPoint = eventPointRepository.selectInfo(Integer.parseInt(info[8].toString()));
+
             getEventinfoRes = new GetEventinfoRes(
                     info[1].toString(), info[2].toString(),
                     info[3].toString(), info[4].toString(),
-                    info[5].toString(), info[6].toString(), imgs);
+                    info[5].toString(), info[6].toString(), imgs,eventPoint.getLocation());
+
+
 
         }
+        System.out.println("보내기 직전");
         System.out.println(getEventinfoRes.toString());
         return new BaseResponse<>(getEventinfoRes);
 
 
 
     }
-
-//    @ResponseBody
-//    @GetMapping(value = "/")
-
-
-
-
-
 
 
     

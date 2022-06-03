@@ -20,6 +20,8 @@ public interface EventRepository  extends JpaRepository<Event, Integer> {
     @Query(value = "SELECT eventIdx From Event where userIdx = ?1 and createdAt = ?2", nativeQuery = true)
     int sellectEventIdx(int userIdx, LocalDateTime createdAt);
 
+    @Query(value = "SELECT * From Event where userIdx = ?1 and eventName = ?2",nativeQuery = true)
+    Event sllectAllByuserIdxandevnetName(int userIdx, String eventname);
     @Query(value = "SELECT * From Event where userIdx = ?1 and eventIdx = ?2", nativeQuery = true)
     Event sellectByUserIdxAndEventIdx(int userIdx, int eventIdx);
 
@@ -38,6 +40,12 @@ public interface EventRepository  extends JpaRepository<Event, Integer> {
     int updateContentsByUserIdxAndEventIdx(String contents, int userIdx,int eventIdx);
 
 
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "UPDATE Event e SET e.contents = :contents and e.kakaoChatUrl :kakaoChatUrl Where e.userIdx = :userIdx and e.eventIdx = :eventIdx",nativeQuery = true)
+    int updateContentsAndURLByUserIdxAndEventIdx(String contents, String kakaoChatUrl, int userIdx,int eventIdx);
+
+
     @Query(value = "SELECT userIdx, eventIdx, eventName, period,createdAt From Event where userIdx = ?1",nativeQuery = true)
     List<Object[]> showEvnetListByuserIdx(int userIdx);
 
@@ -51,9 +59,12 @@ public interface EventRepository  extends JpaRepository<Event, Integer> {
     List<Object[]> showMainPage(int OnOff);
 
 
-    @Query(value = "SELECT eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx FROM Event\n"+
+    @Query(value = "SELECT eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx ,pointIdx FROM Event\n"+
             "WHERE eventIdx = ?1", nativeQuery = true)
     List<Object[]> showEachEvent(int eventIdx);
+
+
+
 
 
 

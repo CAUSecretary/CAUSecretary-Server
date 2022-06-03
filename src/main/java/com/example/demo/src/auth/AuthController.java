@@ -7,6 +7,7 @@ import com.example.demo.src.auth.model.PostAuthloginRes;
 import com.example.demo.src.auth.model.PostLoginReq;
 import com.example.demo.src.auth.model.PostLoginRes;
 import com.example.demo.src.user.UserProvider;
+import com.example.demo.src.user.UserRepository;
 import com.example.demo.src.user.UserService;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
@@ -28,14 +29,17 @@ public class AuthController {
     private final AuthService authService;
     @Autowired
     private final JwtService jwtService;
+    @Autowired
+    private final UserRepository userRepository;
 
 
 
 
-    public AuthController(AuthProvider authProvider, AuthService authService, JwtService jwtService){
+    public AuthController(AuthProvider authProvider, AuthService authService, JwtService jwtService, UserRepository userRepository){
         this.authProvider = authProvider;
         this.authService = authService;
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
     }
 
 
@@ -43,6 +47,20 @@ public class AuthController {
     @ResponseBody
     @PostMapping("/userlogin")
     public BaseResponse<PostLoginRes> userlogIn(@RequestBody PostLoginReq postLoginReq) throws Exception{
+        int userIdxByJwt = jwtService.getUserIdx();
+        int userIdx = 0;
+        try{
+            userIdx = userRepository.findUserIdxByEmail(postLoginReq.getEmail());
+
+        }catch (Exception e){
+            return new BaseResponse<>(NOT_EXIST_USER);
+        }
+
+
+        if(userIdx != userIdxByJwt){
+            return new BaseResponse<>(INVALID_USER_JWT);
+        }
+
 
         System.out.println(postLoginReq.toString());
         try{

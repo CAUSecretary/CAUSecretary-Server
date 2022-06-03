@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<User,Integer> {
     @Query(value = "SELECT certified From User where userIdx = ?1 and belong = ?2", nativeQuery = true )
     String checkcertified(int userIDx, String belong);
 
+    @Query(value = "SELECT userIdx From User where email =?",nativeQuery = true)
+    int findUserIdxByEmail(String email);
+
 
 
 

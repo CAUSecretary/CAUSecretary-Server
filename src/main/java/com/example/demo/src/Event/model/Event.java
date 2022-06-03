@@ -22,7 +22,6 @@ public class Event {
     @Column(nullable = false)
     int userIdx; //학번
 
-
     @Column
     int pointIdx; //경도 위도가 저장되어 있음.
 
