@@ -10,8 +10,8 @@ com/example/demo/utils/ValidationRegex.java
  com.example.demo.utils.ValidationRegex
 com/example/demo/src/Event/PhotoRepository.java
  com.example.demo.src.Event.PhotoRepository
-com/example/demo/config/BaseResponseStatus.java
- com.example.demo.config.BaseResponseStatus
+com/example/demo/DemoApplication.java
+ com.example.demo.DemoApplication
 com/example/demo/src/user/model/DeleteUserReq.java
  com.example.demo.src.user.model.DeleteUserReq
 com/example/demo/config/PagingRes.java
@@ -19,8 +19,8 @@ com/example/demo/config/PagingRes.java
 com/example/demo/src/Event/model/EventPoint.java
  com.example.demo.src.Event.model.EventPoint
  com.example.demo.src.Event.model.EventPoint$EventPointBuilder
-com/example/demo/src/auth/AuthService.java
- com.example.demo.src.auth.AuthService
+com/example/demo/src/Event/model/GetEventinfoRes.java
+ com.example.demo.src.Event.model.GetEventinfoRes
 com/example/demo/src/auth/model/PostAuthloginRes.java
  com.example.demo.src.auth.model.PostAuthloginRes
 com/example/demo/config/secret/Secret.java
@@ -32,20 +32,20 @@ com/example/demo/src/Event/model/PatchEventReq.java
  com.example.demo.src.Event.model.PatchEventReq$PatchEventReqBuilder
 com/example/demo/src/user/model/PostUserRes.java
  com.example.demo.src.user.model.PostUserRes
-com/example/demo/src/user/UserRepository.java
- com.example.demo.src.user.UserRepository
-com/example/demo/config/BaseResponse.java
- com.example.demo.config.BaseResponse
-com/example/demo/config/BaseResponsePaging.java
- com.example.demo.config.BaseResponsePaging
+com/example/demo/src/Event/model/PostEvent2Req.java
+ com.example.demo.src.Event.model.PostEvent2Req
+com/example/demo/src/Event/model/PostEventinfoRes.java
+ com.example.demo.src.Event.model.PostEventinfoRes
+com/example/demo/src/auth/model/User.java
+ com.example.demo.src.auth.model.User
 com/example/demo/src/Event/InstagramCrawler.java
  com.example.demo.src.Event.InstagramCrawler
-com/example/demo/src/user/UserService.java
- com.example.demo.src.user.UserService
+com/example/demo/src/Event/model/Photo.java
+ com.example.demo.src.Event.model.Photo
 com/example/demo/src/auth/model/PostLoginRes.java
  com.example.demo.src.auth.model.PostLoginRes
-com/example/demo/config/BaseException.java
- com.example.demo.config.BaseException
+com/example/demo/src/Event/model/EventDao.java
+ com.example.demo.src.Event.model.EventDao
 com/example/demo/src/Event/model/GetMainPageRes.java
  com.example.demo.src.Event.model.GetMainPageRes
 com/example/demo/src/user/model/createUser.java
@@ -62,8 +62,8 @@ com/example/demo/src/Event/model/Event.java
  com.example.demo.src.Event.model.Event
 com/example/demo/src/user/model/PostLoginRes.java
  com.example.demo.src.user.model.PostLoginRes
-com/example/demo/src/user/UserDao.java
- com.example.demo.src.user.UserDao
+com/example/demo/src/Event/EventRepository.java
+ com.example.demo.src.Event.EventRepository
 com/example/demo/src/user/model/PatchUserReq.java
  com.example.demo.src.user.model.PatchUserReq
 com/example/demo/src/WebSecurityConfig.java
@@ -86,8 +86,8 @@ com/example/demo/src/Event/model/GetEventListRes.java
 com/example/demo/src/auth/model/PostLoginReq.java
  com.example.demo.src.auth.model.PostLoginReq
  com.example.demo.src.auth.model.PostLoginReq$PostLoginReqBuilder
-com/example/demo/src/user/UserController.java
- com.example.demo.src.user.UserController
+com/example/demo/src/user/model/GetUserRes.java
+ com.example.demo.src.user.model.GetUserRes
 com/example/demo/src/Event/EventPointRepository.java
  com.example.demo.src.Event.EventPointRepository
 com/example/demo/src/user/model/User.java
@@ -95,29 +95,29 @@ com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User$UserBuilder
 com/example/demo/src/user/model/DeleteUserRes.java
  com.example.demo.src.user.model.DeleteUserRes
-com/example/demo/src/Event/model/PostEventinfoRes.java
- com.example.demo.src.Event.model.PostEventinfoRes
-com/example/demo/src/user/model/GetUserRes.java
- com.example.demo.src.user.model.GetUserRes
-com/example/demo/src/Event/model/EventDao.java
- com.example.demo.src.Event.model.EventDao
-com/example/demo/DemoApplication.java
- com.example.demo.DemoApplication
-com/example/demo/src/Event/model/Photo.java
- com.example.demo.src.Event.model.Photo
-com/example/demo/utils/JwtService.java
- com.example.demo.utils.JwtService
-com/example/demo/src/auth/model/User.java
- com.example.demo.src.auth.model.User
-com/example/demo/src/user/UserProvider.java
- com.example.demo.src.user.UserProvider
-com/example/demo/src/Event/model/PostEvent2Req.java
- com.example.demo.src.Event.model.PostEvent2Req
-com/example/demo/src/Event/EventRepository.java
- com.example.demo.src.Event.EventRepository
-com/example/demo/src/Event/model/GetEventinfoRes.java
- com.example.demo.src.Event.model.GetEventinfoRes
 com/example/demo/src/Event/EventController.java
  com.example.demo.src.Event.EventController
+com/example/demo/utils/JwtService.java
+ com.example.demo.utils.JwtService
+com/example/demo/src/user/UserController.java
+ com.example.demo.src.user.UserController
+com/example/demo/src/user/UserRepository.java
+ com.example.demo.src.user.UserRepository
+com/example/demo/config/BaseResponse.java
+ com.example.demo.config.BaseResponse
+com/example/demo/config/BaseResponsePaging.java
+ com.example.demo.config.BaseResponsePaging
+com/example/demo/src/user/UserProvider.java
+ com.example.demo.src.user.UserProvider
+com/example/demo/src/user/UserDao.java
+ com.example.demo.src.user.UserDao
+com/example/demo/src/user/UserService.java
+ com.example.demo.src.user.UserService
+com/example/demo/config/BaseResponseStatus.java
+ com.example.demo.config.BaseResponseStatus
+com/example/demo/config/BaseException.java
+ com.example.demo.config.BaseException
 com/example/demo/src/auth/AuthController.java
  com.example.demo.src.auth.AuthController
+com/example/demo/src/auth/AuthService.java
+ com.example.demo.src.auth.AuthService

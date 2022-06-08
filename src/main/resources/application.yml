@@ -74,4 +74,5 @@ secret:
 
 
 file:
-  path: /Users/chaehuiseon/chs_documents/caucap/befor_certification/
+  path: /home/ubuntu/app/cau_secretary/user_certify/
+  #path: /Users/chaehuiseon/chs_documents/caucap/befor_certification/

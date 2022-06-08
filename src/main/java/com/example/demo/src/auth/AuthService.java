@@ -21,6 +21,8 @@ import java.io.*;
 //import java.util.Base64;
 import org.apache.tomcat.util.codec.binary.Base64;
 
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -191,6 +193,80 @@ public class AuthService {
             throw new BaseException(CHECK_USER_CERTIFIED_FAIL);
         }
     }
+
+    //이메일 찾기
+
+    public String findEmail(String phone) throws BaseException{
+        try{
+            String findphone =  userRepository.findEmailByPhone(phone);
+            return findphone;
+
+        }catch (Exception e){
+            throw  new BaseException(ERROR_FIND_EMAIL);
+        }
+
+
+    }
+
+
+    //임시 비밀번호 발급
+
+    public String getImsiPassword(String email) throws  BaseException{
+
+        int userIdx = 0;
+        try{
+            userIdx = userRepository.findUserIdxByEmail(email);
+            System.out.println("일치하는 email 존재함 : "+ userIdx);
+
+            char[] charSet = new char[] {
+                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+            StringBuffer sb = new StringBuffer();
+            SecureRandom sr = new SecureRandom();
+            sr.setSeed(new Date().getTime());
+
+            int idx = 0;
+            int len = charSet.length;
+            for (int i=0; i<6; i++) {
+                // idx = (int) (len * Math.random());
+                idx = sr.nextInt(len);    // 강력한 난수를 발생시키기 위해 SecureRandom을 사용한다.
+                sb.append(charSet[idx]);
+            }
+
+            String imsipassword = sb.toString();
+
+            System.out.println("임시 비밀번호 생성 : "+ imsipassword);
+
+            String encryptImsiPwd = new SHA256().encrypt(imsipassword);
+
+            System.out.println(encryptImsiPwd);
+
+            int check = userRepository.updatePassword(encryptImsiPwd,userIdx,email);
+            if(check == 1){
+                System.out.println("update 성공");
+                return imsipassword;
+            }else{
+                throw  new  BaseException(PATCH_USER_PASSWORD);
+
+            }
+
+
+
+        }catch (Exception e){
+
+            throw  new BaseException(ERROR_FIND_USERIDX);
+
+        }
+
+
+
+
+
+    }
+
+
 
 
 

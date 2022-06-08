@@ -24,19 +24,7 @@ public class UserDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    /*
 
-    public List<GetUserRes> getUsers(){
-        String getUsersQuery = "select userIdx, email, univ, department, belong  from User";
-        return this.jdbcTemplate.query(getUsersQuery,
-                (rs,rowNum) -> new GetUserRes(
-                        rs.getInt("userIdx"),
-                        rs.getString("email"),
-                        rs.getString("univ"),
-                        rs.getString("department"),
-                        rs.getString("belong"),
-                ));
-    }*/
 
     public GetUserRes getUsersByEmail(String email){
         String getUsersByEmailQuery = "select userIdx, email, univ, department, belong  from User where email=?";

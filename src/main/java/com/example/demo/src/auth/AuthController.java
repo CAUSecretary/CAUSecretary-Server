@@ -170,6 +170,50 @@ public class AuthController {
     }
 
 
+    //이메일 찾기
+
+    @GetMapping(value = "/users/find/email")
+    @ResponseBody
+    public BaseResponse<String> findUserEmail(@RequestParam("phone") String phone ) throws BaseException {
+        try{
+            String findemail = authService.findEmail(phone);
+            System.out.println(findemail);
+            return new BaseResponse<>(findemail);
+
+
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+
+    }
+
+
+    //비밀번호 찾기
+
+    @PatchMapping(value = "/users/find/password")
+    @ResponseBody
+    public BaseResponse<String> findEmail(@RequestParam("email") String email ) throws BaseException {
+        String imsipassword = "";
+        imsipassword = authService.getImsiPassword(email);
+        System.out.println("보내기 직전 : "+ imsipassword);
+
+        return new BaseResponse<>(imsipassword);
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
