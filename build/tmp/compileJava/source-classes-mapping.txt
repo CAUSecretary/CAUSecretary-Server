@@ -117,7 +117,7 @@ com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
 com/example/demo/config/BaseException.java
  com.example.demo.config.BaseException
-com/example/demo/src/auth/AuthController.java
- com.example.demo.src.auth.AuthController
 com/example/demo/src/auth/AuthService.java
  com.example.demo.src.auth.AuthService
+com/example/demo/src/auth/AuthController.java
+ com.example.demo.src.auth.AuthController

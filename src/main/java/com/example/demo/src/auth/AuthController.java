@@ -172,9 +172,9 @@ public class AuthController {
 
     //이메일 찾기
 
-    @GetMapping(value = "/users/find/email")
+    @PostMapping(value = "/users/find/email")
     @ResponseBody
-    public BaseResponse<String> findUserEmail(@RequestParam("phone") String phone ) throws BaseException {
+    public BaseResponse<String> findUserEmail(@RequestParam String phone ) throws BaseException {
         try{
             String findemail = authService.findEmail(phone);
             System.out.println(findemail);
