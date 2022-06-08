@@ -9,6 +9,7 @@ import com.example.demo.src.auth.model.PostLoginRes;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserRepository;
 import com.example.demo.src.user.UserService;
+import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,7 @@ public class AuthController {
     @ResponseBody
     @PostMapping("/userlogin")
     public BaseResponse<PostLoginRes> userlogIn(@RequestBody PostLoginReq postLoginReq) throws Exception{
+    //public BaseResponse<PostLoginRes> userlogIn(@RequestParam("eamil")String email, @RequestParam("password")String password) throws Exception{
         int userIdxByJwt = jwtService.getUserIdx();
         int userIdx = 0;
         try{
@@ -63,6 +65,7 @@ public class AuthController {
 
 
         System.out.println(postLoginReq.toString());
+
         try{
             if(postLoginReq.getEmail() == null){ // email이 비어서 왔는지 확인
                 return new BaseResponse<>(BaseResponseStatus.POST_USERS_EMPTY_EMAIL);
@@ -74,8 +77,8 @@ public class AuthController {
             if(!isRegexEmail(postLoginReq.getEmail())){
                 return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
             }
-
             PostLoginRes postLoginRes = authService.login(postLoginReq);
+            System.out.println(postLoginRes.toString());
 
             return new BaseResponse<>(postLoginRes);
 

@@ -28,4 +28,5 @@ public class GetEventinfoRes {
     @Column(nullable = true)
     List<String> imgs;
     String location;
+    int pointIdx;
 }

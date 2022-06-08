@@ -88,8 +88,8 @@ com/example/demo/src/auth/model/PostLoginReq.java
  com.example.demo.src.auth.model.PostLoginReq$PostLoginReqBuilder
 com/example/demo/src/user/UserController.java
  com.example.demo.src.user.UserController
-com/example/demo/src/auth/AuthController.java
- com.example.demo.src.auth.AuthController
+com/example/demo/src/Event/EventPointRepository.java
+ com.example.demo.src.Event.EventPointRepository
 com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User
  com.example.demo.src.user.model.User$UserBuilder
@@ -115,9 +115,9 @@ com/example/demo/src/Event/model/PostEvent2Req.java
  com.example.demo.src.Event.model.PostEvent2Req
 com/example/demo/src/Event/EventRepository.java
  com.example.demo.src.Event.EventRepository
-com/example/demo/src/Event/model/GetEventinfoRes.java
- com.example.demo.src.Event.model.GetEventinfoRes
+com/example/demo/src/auth/AuthController.java
+ com.example.demo.src.auth.AuthController
 com/example/demo/src/Event/EventController.java
  com.example.demo.src.Event.EventController
-com/example/demo/src/Event/EventPointRepository.java
- com.example.demo.src.Event.EventPointRepository
+com/example/demo/src/Event/model/GetEventinfoRes.java
+ com.example.demo.src.Event.model.GetEventinfoRes

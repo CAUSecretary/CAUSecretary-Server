@@ -392,6 +392,7 @@ public class EventController {
     }
 
     // eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx
+    //eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx ,pointIdx
 
     @ResponseBody
     @GetMapping(value = "/get/each/event/main/{eventIdx}")
@@ -404,7 +405,7 @@ public class EventController {
         List<Object[]> event = eventRepository.showEachEvent(eventIdx);
         //초기화
         GetEventinfoRes getEventinfoRes = new GetEventinfoRes("","",
-                "","","","",Arrays.asList(""),"");
+                "","","","",Arrays.asList(""),"",0);
         //eventIdx, eventName, belong, kakaoChatUrl, phone, period, contents , userIdx
         for(Object[] info : event){
             List<String> imgs ;
@@ -442,7 +443,8 @@ public class EventController {
             getEventinfoRes = new GetEventinfoRes(
                     info[1].toString(), info[2].toString(),
                     info[3].toString(), info[4].toString(),
-                    info[5].toString(), info[6].toString(), imgs,eventPoint.getLocation());
+                    info[5].toString(), info[6].toString(), imgs,eventPoint.getLocation(),
+                    Integer.parseInt( info[8].toString()));
 
 
 
