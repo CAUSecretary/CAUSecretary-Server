@@ -49,19 +49,19 @@ public class AuthController {
     @PostMapping("/userlogin")
     public BaseResponse<PostLoginRes> userlogIn(@RequestBody PostLoginReq postLoginReq) throws Exception{
     //public BaseResponse<PostLoginRes> userlogIn(@RequestParam("eamil")String email, @RequestParam("password")String password) throws Exception{
-        int userIdxByJwt = jwtService.getUserIdx();
-        int userIdx = 0;
-        try{
-            userIdx = userRepository.findUserIdxByEmail(postLoginReq.getEmail());
-
-        }catch (Exception e){
-            return new BaseResponse<>(NOT_EXIST_USER);
-        }
-
-
-        if(userIdx != userIdxByJwt){
-            return new BaseResponse<>(INVALID_USER_JWT);
-        }
+//        int userIdxByJwt = jwtService.getUserIdx();
+//        int userIdx = 0;
+//        try{
+//            userIdx = userRepository.findUserIdxByEmail(postLoginReq.getEmail());
+//
+//        }catch (Exception e){
+//            return new BaseResponse<>(NOT_EXIST_USER);
+//        }
+//
+//
+//        if(userIdx != userIdxByJwt){
+//            return new BaseResponse<>(INVALID_USER_JWT);
+//        }
 
 
         System.out.println(postLoginReq.toString());
