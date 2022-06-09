@@ -38,8 +38,8 @@ com/example/demo/src/Event/model/PostEventinfoRes.java
  com.example.demo.src.Event.model.PostEventinfoRes
 com/example/demo/src/auth/model/User.java
  com.example.demo.src.auth.model.User
-com/example/demo/src/Event/InstagramCrawler.java
- com.example.demo.src.Event.InstagramCrawler
+com/example/demo/config/BaseException.java
+ com.example.demo.config.BaseException
 com/example/demo/src/Event/model/Photo.java
  com.example.demo.src.Event.model.Photo
 com/example/demo/src/auth/model/PostLoginRes.java
@@ -95,8 +95,8 @@ com/example/demo/src/user/model/User.java
  com.example.demo.src.user.model.User$UserBuilder
 com/example/demo/src/user/model/DeleteUserRes.java
  com.example.demo.src.user.model.DeleteUserRes
-com/example/demo/src/Event/EventController.java
- com.example.demo.src.Event.EventController
+com/example/demo/src/auth/AuthService.java
+ com.example.demo.src.auth.AuthService
 com/example/demo/utils/JwtService.java
  com.example.demo.utils.JwtService
 com/example/demo/src/user/UserController.java
@@ -115,9 +115,9 @@ com/example/demo/src/user/UserService.java
  com.example.demo.src.user.UserService
 com/example/demo/config/BaseResponseStatus.java
  com.example.demo.config.BaseResponseStatus
-com/example/demo/config/BaseException.java
- com.example.demo.config.BaseException
-com/example/demo/src/auth/AuthService.java
- com.example.demo.src.auth.AuthService
 com/example/demo/src/auth/AuthController.java
  com.example.demo.src.auth.AuthController
+com/example/demo/src/Event/EventController.java
+ com.example.demo.src.Event.EventController
+com/example/demo/src/Event/InstagramCrawler.java
+ com.example.demo.src.Event.InstagramCrawler

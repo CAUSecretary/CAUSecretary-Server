@@ -179,6 +179,132 @@ public class EventController {
     }
 
 
+
+
+
+    @PostMapping(value = "/event/create/imsi2")
+    public BaseResponse<PostEventRes> createEventimsi2(@RequestBody PostEventReq postEventReq) throws Exception, BaseException {
+        // jwt 식별 코드 추가해야 됨.
+
+        System.out.println("진입 했습니다. /event/create");
+        System.out.println(postEventReq.toString()); //받은값
+        int instacralwer =  postEventReq.getInstacralwer();
+        String[] imsi = new String[1];
+        Arrays.fill(imsi,"");
+        //초기화
+        PostEventRes rtEventRes = new PostEventRes(0,0,0,
+                0,"","","","","",
+                "", Arrays.asList(imsi),0);
+
+        Event event = new Event();
+        event.setUserIdx(postEventReq.getUserIdx());
+        event.setPointIdx(postEventReq.getPointIdx());
+        event.setOnOff(postEventReq.getOnOff());
+        event.setEventName(postEventReq.getEventName());
+        event.setBelong(postEventReq.getBelong());
+        event.setKakaoChatUrl(postEventReq.getKakaoChatUrl());
+        event.setPhone(postEventReq.getPhone());
+        event.setPeriod(postEventReq.getPeriod());
+
+        System.out.println(event.toString());
+        System.out.println();
+
+
+        if(instacralwer == 1){ //인스타 그램 사용
+
+            //instagram을 사용할거니깐
+            event.setInstaUrl(postEventReq.getInstaUrl());
+            eventRepository.save(event); //event저장
+            int userIdx = event.getUserIdx();
+            //eventIdx 발급 조건을 userIdx와, 발급 시간을 기준으로 변경.
+            LocalDateTime createdAt = event.getCreatedAt();
+            //발급된 event idx 가져옴
+            int eventIdx = eventRepository.sellectEventIdx(userIdx, createdAt);
+            //int eventIdx = eventRepository.sellectEventIdx(userIdx, event.getInstaUrl());
+            System.out.println("발급된 eventIdx"+eventIdx);
+            //InstagramCrawler crawler = new InstagramCrawler(Integer.toString(eventIdx), Integer.toString(event.getUserIdx()), event.getInstaUrl());
+            //crawler.start();
+            //크롤링 시작
+            InstagramCrawler.create(Integer.toString(eventIdx), Integer.toString(event.getUserIdx()), event.getInstaUrl());
+            List<String> imgList = photoRepository.sellectAllImgurl(userIdx, eventIdx);
+
+            Event savedEvent = eventRepository.sellectByUserIdxAndEventIdx(userIdx, eventIdx);
+            String contents = eventRepository.sellectContents(userIdx, eventIdx);
+            System.out.println("contents: " + contents);
+            //List<Event> savedEvent = eventRepository.findAll();
+            System.out.println(savedEvent.toString());
+            PostEventRes postEventRes = new PostEventRes(
+                    savedEvent.getEventIdx(),
+                    savedEvent.getUserIdx(),
+                    savedEvent.getPointIdx(),
+                    savedEvent.getOnOff(),
+                    savedEvent.getEventName(),
+                    savedEvent.getBelong(),
+                    savedEvent.getKakaoChatUrl(),
+                    savedEvent.getPhone(),
+                    savedEvent.getPeriod(),
+                    //savedEvent.getContents(),
+                    contents,
+                    imgList,
+                    instacralwer);
+
+            System.out.println(postEventRes);
+
+            //return new BaseResponse<>(postEventRes);
+            rtEventRes = postEventRes;
+
+
+        }else if(instacralwer == 0){
+            event.setContents("");
+            event.setInstaUrl("");
+            Event savedEvent = eventRepository.save(event);
+            int userIdx = event.getUserIdx();
+            int eventIdx = savedEvent.getEventIdx();
+
+            PostEventRes postEventRes = new PostEventRes(
+                    savedEvent.getEventIdx(),
+                    savedEvent.getUserIdx(),
+                    savedEvent.getPointIdx(),
+                    savedEvent.getOnOff(),
+                    savedEvent.getEventName(),
+                    savedEvent.getBelong(),
+                    savedEvent.getKakaoChatUrl(),
+                    savedEvent.getPhone(),
+                    savedEvent.getPeriod(),
+                    //savedEvent.getContents(),
+                    "",
+                    Arrays.asList(imsi),
+                    instacralwer);
+
+
+            System.out.println(postEventRes);
+
+            //return new BaseResponse<>(postEventRes);
+            rtEventRes = postEventRes;
+
+
+        }
+
+        System.out.println(rtEventRes.toString());
+        return new BaseResponse<>(rtEventRes);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @PostMapping(value = "/event/create/go")
     public BaseResponse<PostEventRes> createEventgo(@RequestParam("userIdx")int userIdx, @RequestParam("eventName") String eventName, @RequestParam("instacralwer") int instacralwer) throws Exception, BaseException {
         Event event = eventRepository.sllectAllByuserIdxandevnetName(userIdx, eventName);

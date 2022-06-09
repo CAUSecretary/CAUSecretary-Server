@@ -172,6 +172,7 @@ public class AuthController {
 
     //이메일 찾기
 
+
     @PostMapping(value = "/users/find/email")
     @ResponseBody
     public BaseResponse<String> findUserEmail(@RequestParam String phone ) throws BaseException {

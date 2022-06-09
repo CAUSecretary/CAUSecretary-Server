@@ -24,8 +24,8 @@ public class InstagramCrawler extends Thread{
         System.out.println("Python Call");
         String[] command = new String[5];
         command[0] = "python3";
-        //command[1] = "\\workspace\\java-call-python\\src\\main\\resources\\test.py";
-        command[1] = "/Users/chaehuiseon/chs_documents/data_test/instagram.py";
+        //command[1] = "/Users/chaehuiseon/chs_documents/data_test/instagram.py";
+        command[1] = "/Users/chaehuiseon/chs_documents/data_test/insta_beta4.py";
         command[2] = eventIdx;
         System.out.println(eventIdx);
         //command[2] = "1";
